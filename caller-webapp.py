@@ -1,6 +1,6 @@
 from flask import Flask
 import random
-from config import TWILIOCFG, FRASES
+from config import TWILIOCFG, FRASES, CUMPLE
 from twilio.twiml.voice_response import VoiceResponse
 
 app = Flask(__name__)
@@ -9,7 +9,8 @@ def SeleccionarFrase(listadefrases):
     return random.choice(listadefrases)
 
 def TwiMLResponse(texto):
-    voices = ['man', 'woman', 'alice']
+    #voices = ['man', 'woman', 'alice']
+    voices = ['alice']
     selectedvoice = random.choice(voices)
     if selectedvoice == 'alice':
         lang = 'es-MX'
@@ -29,5 +30,17 @@ def home():
 def answer_call():
     return str(TwiMLResponse(SeleccionarFrase(FRASES)))
 
+@app.route("/diasparaelcumple", methods=['GET', 'POST'])
+def calcular_dias():
+    import datetime
+    cumple=datetime.date(CUMPLE['anio'], CUMPLE['mes'], CUMPLE['dia'])
+    hoy = datetime.date.today()
+    dias = (cumple-hoy).days
+    if dias > 0:
+        return str(TwiMLResponse('Buenos días. Le informamos que faltan {} días para el cumple de {}. Saludos!'.format(dias, CUMPLE['nombre'])))
+    else:
+        return str(TwiMLResponse('Buenos días. Le informamos que hoy es el cumple de {}. Saludos!'.format(CUMPLE['nombre'])))
+
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', port=10000, debug=True)
+    #app.run(host='127.0.0.1', port=10000, debug=True)
+    app.run(host='127.0.0.1')
