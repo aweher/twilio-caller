@@ -18,7 +18,7 @@ def TwiMLResponse(texto):
         lang = 'es' 
     tr = VoiceResponse()
     tr.pause(length=1)
-    tr.say(message=texto, voice=selectedvoice, loop=0, language=lang)
+    tr.say(message=texto, voice=selectedvoice, loop=1, language=lang)
     tr.hangup()
     return tr.to_xml()
 
