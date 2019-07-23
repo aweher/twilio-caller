@@ -13,9 +13,9 @@ def TwilioLogin(apilogindata):
     try:
         cli = Client(account_sid, auth_token)
     except Exception as e:
-        print(f"Error al iniciar sesión en Twilio: {e}")
+        print("Error al iniciar sesión en Twilio: {}".format(e))
         return False
-    logging.info(f'Logueado correctamente en Twilio')
+    logging.info('Logueado correctamente en Twilio')
     return cli
 
 def GetTwilioNumbers(cli):
@@ -41,7 +41,7 @@ if __name__ == "__main__":
         sys.exit(-1)
 
     for numto, url in NUMEROS.items():
-        print(f'Llamando a {numto}')
+        print('Llamando a {}'.format(numto))
         print(Llamar(client, random.choice(GetTwilioNumbers(client)), numto, url))
 
     print("Have a nice day")
